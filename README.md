@@ -10,3 +10,5 @@ nombre, imagen, experiencia base, altura, peso y habilidades.
 Laravel **v8.83.27** (PHP **v8.1.2**)
 
 **8.0.31** - MySQL Community Server - GPL
+
+**16.14.0** - React
