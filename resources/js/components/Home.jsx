@@ -15,9 +15,14 @@ function Home() {
         .then(response => {
             return response.json();
         })
-        .then(pokemon => {
-            //Fetched product is stored in the state 
-            setPokemon(pokemon);
+        .then((result) => {
+          setPokemon(result);
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        (error) => {
+          console.log(error);
         });
     };
     // Call this function to get products data 
@@ -105,7 +110,7 @@ function Home() {
                             <button onClick={() => {backPage();}} type="button" name="btn_prev" className="btn btn-md btn-secondary">Anterior</button>
                         </th>
                         <td>
-                            {page} - {page+10}
+                            {page+1} - {page+10}
                         </td>
                         <td>
                             <button onClick={() => {nextPage();}} type="button" name="btn_forw" className="btn btn-md btn-secondary">Siguiente</button>

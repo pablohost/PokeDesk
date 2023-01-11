@@ -2181,9 +2181,14 @@ function Home() {
     /* fetch API in action */
     fetch('show/' + page_req).then(function (response) {
       return response.json();
-    }).then(function (pokemon) {
-      //Fetched product is stored in the state 
-      setPokemon(pokemon);
+    }).then(function (result) {
+      setPokemon(result);
+    },
+    // Note: it's important to handle errors here
+    // instead of a catch() block so that we don't swallow
+    // exceptions from actual bugs in components.
+    function (error) {
+      console.log(error);
     });
   };
   // Call this function to get products data 
@@ -2301,7 +2306,7 @@ function Home() {
               children: "Anterior"
             })
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {
-            children: [page, " - ", page + 10]
+            children: [page + 1, " - ", page + 10]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
               onClick: function onClick() {

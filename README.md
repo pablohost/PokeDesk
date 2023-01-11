@@ -7,8 +7,8 @@ nombre, imagen, experiencia base, altura, peso y habilidades.
 
 ## Tech Stack
 
-Laravel **v8.83.27** (PHP **v8.1.2**)
+Laravel - **v8.83.27** (PHP **v8.1.2**)
 
-**8.0.31** - MySQL Community Server - GPL
+MySQL Community Server - GPL - **8.0.31**
 
-**16.14.0** - React
+React - **16.14.0**
