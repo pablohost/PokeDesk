@@ -6,10 +6,17 @@ nombre, imagen, experiencia base, altura, peso y habilidades.
 
 ## Installation
 
+1. Crear base de datos mysql 'pokedesk' en tu localhost
+2. Copiar archivo .env.example en archivo .env
+3. En la carpeta raiz del proyecto
+
 ```bash
-  npm install my-project
-  cd my-project
+  composer install
+  npm install
+  php artisan migrate
+  php artisan serve
 ```
+4. En tu navegador abre http://127.0.0.1:8000/
 
 ## Tech Stack
 
