@@ -4,6 +4,12 @@ los primeros 100 pokemon
 
 nombre, imagen, experiencia base, altura, peso y habilidades.
 
+## Installation
+
+```bash
+  npm install my-project
+  cd my-project
+```
 
 ## Tech Stack
 
@@ -12,3 +18,5 @@ Laravel - **v8.83.27** (PHP **v8.1.2**)
 MySQL Community Server - GPL - **8.0.31**
 
 React - **16.14.0**
+
+Xampp Control Panel - **v3.3.0**
