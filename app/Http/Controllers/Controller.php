@@ -21,19 +21,7 @@ class Controller extends BaseController
         $pokemon_list = $response_list->json()['results'];
         for ($i=0; $i < count($pokemon_list); $i++) { 
             $response_pokemon = Http::get($pokemon_list[$i]['url']);
-            $pokemon = Pokemon::where('name', $pokemon_list[$i]['name'])->first();
-            if (!$pokemon) {
-                $pokemon = new Pokemon;
-                $pokemon->name = $pokemon_list[$i]['name'];
-                $pokemon->base_experience = $response_pokemon->json()['base_experience'];
-                $pokemon->height = $response_pokemon->json()['height'];
-                $pokemon->weight = $response_pokemon->json()['weight'];
-                $pokemon->sprite = $response_pokemon->json()['sprites']['front_default'];
-                $pokemon->save();
-                $this->process_abilities($pokemon, $response_pokemon->json());
-            }else{
-                $this->process_abilities($pokemon, $response_pokemon->json());
-            }
+            $pokemon = $this->process_pokemon($pokemon_list[$i]['name'], $response_pokemon->json());
         }
         echo 'Habilidades actualizadas correctamente';
     }
@@ -55,6 +43,25 @@ class Controller extends BaseController
         }
     }
 
+    public function process_pokemon($name = '', $response_pokemon = [])
+    {
+        $pokemon = Pokemon::where('name', $name)->first();
+        if (!$pokemon) {
+            $pokemon = new Pokemon;
+            $pokemon->name = $name;
+            $pokemon->base_experience = $response_pokemon['base_experience'];
+            $pokemon->height = $response_pokemon['height'];
+            $pokemon->weight = $response_pokemon['weight'];
+            $pokemon->sprite = $response_pokemon['sprites']['front_default'];
+            $pokemon->save();
+            $this->process_abilities($pokemon, $response_pokemon);
+        }else{
+            $this->process_abilities($pokemon, $response_pokemon);
+        }
+
+        return $pokemon;
+    }
+
     public function home($value='')
     {
         return view("welcome");
@@ -74,6 +81,8 @@ class Controller extends BaseController
                     $pokemon->id = $response_pokemon->json()['id'];
                     $pokemon->sprite = $response_pokemon->json()['sprites']['front_default'];
                     $response[] = $pokemon;
+                    /*actualizo pokemon en bd*/
+                    $this->process_pokemon($pokemon_list[$i]['name'], $response_pokemon->json());
                 }
                 return $response;
             }else{
@@ -135,17 +144,27 @@ class Controller extends BaseController
 
     public function search($pokemon='')
     {
-        $response_pokemon = Http::get('https://pokeapi.co/api/v2/pokemon/'.$pokemon);
-        if ($response_pokemon=='Not Found') {
+        try{
+            $response_pokemon = Http::get('https://pokeapi.co/api/v2/pokemon/'.$pokemon);
+            if ($response_pokemon->ok() == '200') {
+                if ($response_pokemon=='Not Found') {
+                    return [];
+                }
+                $pokemon = new Pokemon;
+                $pokemon->name = $response_pokemon->json()['name'];
+                $pokemon->id = $response_pokemon->json()['id'];
+                $pokemon->sprite = $response_pokemon->json()['sprites']['front_default'];
+                $pokemon->base_experience = $response_pokemon->json()['base_experience'];
+                $pokemon->height = $response_pokemon->json()['height'];
+                $pokemon->weight = $response_pokemon->json()['weight'];
+                return [$pokemon];
+            }else{
+                $pokemon = Pokemon::where('pokemon.name', $pokemon)->first();
+                return [$pokemon];
+            }
+        } catch (\Exception $e)
+        {
             return [];
         }
-        $pokemon = new Pokemon;
-        $pokemon->name = $response_pokemon->json()['name'];
-        $pokemon->id = $response_pokemon->json()['id'];
-        $pokemon->sprite = $response_pokemon->json()['sprites']['front_default'];
-        $pokemon->base_experience = $response_pokemon->json()['base_experience'];
-        $pokemon->height = $response_pokemon->json()['height'];
-        $pokemon->weight = $response_pokemon->json()['weight'];
-        return [$pokemon];
     }
 }

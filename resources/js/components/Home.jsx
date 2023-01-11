@@ -46,8 +46,12 @@ function Home() {
                 return response.json();
             })
             .then(pokemon => {
-                //Fetched product is stored in the state 
-                setPokemon(pokemon);
+                //Fetched product is stored in the state
+                if(pokemon[0]){
+                    setPokemon(pokemon);
+                }else{
+                    getPokemon(0);
+                }
             });
         }
     };

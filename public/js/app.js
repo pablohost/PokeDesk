@@ -2208,8 +2208,12 @@ function Home() {
       fetch('search/' + search).then(function (response) {
         return response.json();
       }).then(function (pokemon) {
-        //Fetched product is stored in the state 
-        setPokemon(pokemon);
+        //Fetched product is stored in the state
+        if (pokemon[0]) {
+          setPokemon(pokemon);
+        } else {
+          getPokemon(0);
+        }
       });
     }
   };
