@@ -2156,10 +2156,30 @@ function Home() {
     _useState2 = _slicedToArray(_useState, 2),
     pokemon = _useState2[0],
     setPokemon = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+      'pokemon': {
+        'name': 'No Seleccionado'
+      },
+      'abilities': [{
+        'name': ' '
+      }]
+    }),
+    _useState4 = _slicedToArray(_useState3, 2),
+    pokemon_details = _useState4[0],
+    setPokemonDetails = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
+    _useState6 = _slicedToArray(_useState5, 2),
+    search = _useState6[0],
+    setSearch = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
+    _useState8 = _slicedToArray(_useState7, 2),
+    page = _useState8[0],
+    setPage = _useState8[1];
   // Call this function to get products data 
-  var getPokemon = function getPokemon() {
+  var getPokemon = function getPokemon(page_req) {
+    setPage(page_req);
     /* fetch API in action */
-    fetch('show').then(function (response) {
+    fetch('show/' + page_req).then(function (response) {
       return response.json();
     }).then(function (pokemon) {
       //Fetched product is stored in the state 
@@ -2168,55 +2188,164 @@ function Home() {
   };
   // Call this function to get products data 
   var detailsPokemon = function detailsPokemon(id) {
-    console.log(id);
     /* fetch API in action */
     fetch('show_details/' + id).then(function (response) {
-      console.log(response.json());
       return response.json();
     }).then(function (pokemon) {
       //Fetched product is stored in the state 
-      //setPokemon(pokemon);
+      setPokemonDetails(pokemon);
     });
+  };
+  // Call this function to get products data 
+  var searchPokemon = function searchPokemon() {
+    /* fetch API in action */
+    if (search != '') {
+      fetch('search/' + search).then(function (response) {
+        return response.json();
+      }).then(function (pokemon) {
+        //Fetched product is stored in the state 
+        setPokemon(pokemon);
+      });
+    }
   };
   /*useEffect is a lifecycle hook 
   * that gets called after the component is rendered 
   */
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    console.log(react__WEBPACK_IMPORTED_MODULE_0__.version);
-    getPokemon();
+    getPokemon(0);
   }, []);
   // Render the products 
   var renderPokemon = function renderPokemon() {
-    return pokemon.map(function (pokemon) {
-      return (
-        /*#__PURE__*/
-        /* When using list you need to specify a key 
-        * attribute that is unique for each list item 
-        */
-        (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
+    if (pokemon.length > 0) {
+      return pokemon.map(function (pokemon) {
+        return (
+          /*#__PURE__*/
+          /* When using list you need to specify a key 
+          * attribute that is unique for each list item 
+          */
+          (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
+              scope: "row",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
+                src: pokemon.sprite,
+                alt: "",
+                width: "60px"
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+              children: pokemon.name
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                onClick: function onClick() {
+                  detailsPokemon(pokemon.id);
+                },
+                type: "button",
+                name: "btn_details",
+                className: "btn btn-md btn-warning",
+                children: "Detalles"
+              })
+            })]
+          }, pokemon.id)
+        );
+      });
+    } else {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
+        className: "",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
+          className: ""
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+          className: "spinner-border",
+          role: "status",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
+            className: "sr-only",
+            children: "Cargando..."
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+          className: ""
+        })]
+      });
+    }
+  };
+  // Render the products 
+  var renderPokemonFooter = function renderPokemonFooter() {
+    if (pokemon.length > 0) {
+      if (pokemon.length == 1) {
+        return (
+          /*#__PURE__*/
+          /* When using list you need to specify a key 
+          * attribute that is unique for each list item 
+          */
+          (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                onClick: function onClick() {
+                  getPokemon(0);
+                },
+                type: "button",
+                name: "btn_back",
+                className: "btn btn-md btn-secondary",
+                children: "Ver Todo"
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {})]
+          })
+        );
+      } else {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
-            scope: "row",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
-              src: pokemon.sprite,
-              alt: "",
-              width: "80px"
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+              onClick: function onClick() {
+                backPage();
+              },
+              type: "button",
+              name: "btn_prev",
+              className: "btn btn-md btn-secondary",
+              children: "Anterior"
             })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
-            children: pokemon.name
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {
+            children: [page, " - ", page + 10]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
               onClick: function onClick() {
-                detailsPokemon(pokemon.id);
+                nextPage();
               },
               type: "button",
-              name: "btn_details",
-              className: "btn btn-md btn-warning",
-              children: "Detalles"
+              name: "btn_forw",
+              className: "btn btn-md btn-secondary",
+              children: "Siguiente"
             })
           })]
-        }, pokemon.id)
-      );
+        });
+      }
+    } else {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
+        className: "",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
+          className: ""
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+          className: ""
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+          className: ""
+        })]
+      });
+    }
+  };
+  // Render the products 
+  var renderAbilities = function renderAbilities() {
+    return pokemon_details['abilities'].map(function (pokemon_details) {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h5", {
+        children: pokemon_details['name']
+      }, pokemon_details['name']);
     });
+  };
+  // Render the products 
+  var backPage = function backPage() {
+    if (page > 0) {
+      getPokemon(page - 10);
+    }
+  };
+  var nextPage = function nextPage() {
+    if (page < 90) {
+      getPokemon(page + 10);
+    }
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
     className: "container",
@@ -2249,6 +2378,9 @@ function Home() {
                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
                         className: "col-8",
                         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+                          onChange: function onChange(e) {
+                            return setSearch(e.target.value);
+                          },
                           type: "text",
                           name: "txt_search",
                           id: "txt_search"
@@ -2256,6 +2388,9 @@ function Home() {
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
                         className: "col-4",
                         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                          onClick: function onClick() {
+                            searchPokemon();
+                          },
                           type: "button",
                           name: "btn_search",
                           className: "btn btn-md btn-info",
@@ -2294,6 +2429,8 @@ function Home() {
                         })
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("tbody", {
                         children: renderPokemon()
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("tfoot", {
+                        children: renderPokemonFooter()
                       })]
                     })
                   })
@@ -2311,7 +2448,43 @@ function Home() {
             children: "Detalles Pokemon"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
             className: "card-body",
-            children: "Seleccione un Pokemon"
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+              className: "container",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                className: "row justify-content-center",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                  className: "col-12",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h4", {
+                    children: pokemon_details['pokemon'].name
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                  className: "col-6",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
+                    src: pokemon_details['pokemon'].sprite,
+                    alt: "",
+                    width: "80px"
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+                  className: "col-6",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("h6", {
+                    children: ["Experiencia Base ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("b", {
+                      children: pokemon_details['pokemon'].base_experience
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("h6", {
+                    children: ["Altura ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("b", {
+                      children: pokemon_details['pokemon'].height
+                    })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("h6", {
+                    children: ["Peso ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("b", {
+                      children: pokemon_details['pokemon'].weight
+                    })]
+                  })]
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                  className: "col-12",
+                  children: renderAbilities()
+                })]
+              })
+            })
           })]
         })
       })]

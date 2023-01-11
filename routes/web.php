@@ -16,5 +16,6 @@ use App\Http\Controllers\Controller;
 
 Route::get('/refresh', [Controller::class, 'refresh']);
 Route::get('/', [Controller::class, 'home']);
-Route::get('/show', [Controller::class, 'show']);
+Route::get('/show/{offset}', [Controller::class, 'show']);
 Route::get('/show_details/{pokemon}', [Controller::class, 'show_details']);
+Route::get('/search/{pokemon}', [Controller::class, 'search']);
